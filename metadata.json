@@ -1,0 +1,11 @@
+{
+  "name": "Grok AI Assistant",
+  "description": "An ultra-premium Grok-inspired AI companion with witty Fun Mode, objective Regular Mode, collaborative deep search, real-time search grounding sources, and an immersive jet-black interface.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
