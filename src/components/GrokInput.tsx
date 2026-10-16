@@ -8,8 +8,10 @@ import {
   X, 
   Terminal,
   ChevronDown,
-  Info
+  Info,
+  Mic
 } from "lucide-react";
+import { useVoice } from "../hooks/useVoice";
 
 interface GrokInputProps {
   onSendMessage: (text: string, image?: string) => void;
@@ -36,6 +38,8 @@ export function GrokInput({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const { isListening, voiceSupported, startListening, stopListening } = useVoice();
 
   // Slash commands data
   const slashCommands = [
@@ -316,6 +320,26 @@ export function GrokInput({
                 Fun Mode
               </button>
             </div>
+
+            {/* Voice input button */}
+            {voiceSupported && (
+              <button
+                type="button"
+                onClick={() =>
+                  isListening
+                    ? stopListening()
+                    : startListening((t) => setInputText(t))
+                }
+                className={`p-1.5 rounded-full transition-all cursor-pointer ${
+                  isListening
+                    ? "bg-red-500 text-white animate-pulse"
+                    : "bg-zinc-900 text-zinc-400 hover:text-[#00ff66]"
+                }`}
+                title={isListening ? "Stop listening" : "Voice input"}
+              >
+                <Mic className="w-4 h-4" />
+              </button>
+            )}
 
             {/* Submit Arrow button */}
             <button
