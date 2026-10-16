@@ -18,7 +18,9 @@ import {
   Plus,
   Compass,
   Zap,
-  Bot
+  Bot,
+  Volume2,
+  Square
 } from "lucide-react";
 
 import { GrokSidebar } from "./components/GrokSidebar";
@@ -26,6 +28,7 @@ import { GrokInput } from "./components/GrokInput";
 import { GrokHTMLRenderer } from "./components/GrokHTMLRenderer";
 import { GrokMindmap } from "./components/GrokMindmap";
 import { ChatSession, ChatMessage, UserProfile, QuickSuggestion } from "./types";
+import { useVoice } from "./hooks/useVoice";
 
 export default function App() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -43,6 +46,7 @@ export default function App() {
   const [partialStreamText, setPartialStreamText] = useState<string>("");
 
   const conversationEndRef = useRef<HTMLDivElement>(null);
+  const { isSpeaking, speak, stopSpeaking } = useVoice();
 
   // Quick Starter suggestions grid
   const initialSuggestions: QuickSuggestion[] = [
@@ -550,6 +554,16 @@ export default function App() {
                         <span className="text-zinc-650">
                           {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
+                        {!isUser && (
+                          <button
+                            type="button"
+                            onClick={() => (isSpeaking ? stopSpeaking() : speak(msg.content))}
+                            className="p-1 rounded hover:bg-zinc-900 text-zinc-500 hover:text-[#00ff66] transition-colors cursor-pointer"
+                            title={isSpeaking ? "Stop reading aloud" : "Read aloud"}
+                          >
+                            {isSpeaking ? <Square className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                          </button>
+                        )}
 
                         {!isUser && msg.deepSearchSteps && (
                           <span className="text-[9px] text-[#00ff66] bg-[#00ff66]/10 px-1.5 py-0.5 rounded border border-[#00ff66]/20 font-bold uppercase tracking-wider">
